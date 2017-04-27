@@ -1,28 +1,25 @@
 # -*- coding: utf-8 -*-
 import datetime
-#PyBot
 
 
-#THIS IS TO LOG ERRORS
-def log_file():
-    try:
-        #this is ran when the bot launches.
-        print("Opening file....")
-        f = open("../logs.txt", "a")
-        f.write("Rib is being launched....\nTimestamp: "+str(datetime.datetime.now())+"\n")
-    except:
-        print("There was an error opening the file.")
-        print("Creating a new one....")
-        f = open("../logs.txt", "a")
-        f.write("Log file created....\n")
-        f.write("Rib is being launched.....\nTimestamp: "+str(datetime.datetime.now())+"\n")
-        f.close()
-#open file to write errors
-def log_write(msg):
-    f = open("../logs.txt", "a")
-    f.write(msg)
-    f.close
+class Log:
+    def __init__(self, log_file):
+        self.open_file(log_file)
 
-def report_error(error):
-    error = "There was an error:\t{} :{}\n".format(str(error.__class__), str(error))
-    log_write(error)
+    def open_file(self, file_name):
+        try:
+            self.logs = open(file_name, "a")
+            self.logs.write("Rib is being launched {}".format(datetime.datetime.now()))
+        except:
+            print("There was an error opening the log.txt")
+            exit(0)
+
+    def log_write(self, msg):
+        self.logs.write(msg + "\n")
+
+    def report_error(self, error):
+        error = "There was an error:\t{} :{}\n".format(str(error.__class__), str(error))
+        self.log_write(error)
+
+    def close(self):
+        self.logs.close()
